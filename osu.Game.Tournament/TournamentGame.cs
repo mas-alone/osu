@@ -73,7 +73,7 @@ namespace osu.Game.Tournament
                     loadingSpinner.Expire();
 
                     Logger.Error(t.Exception, "无法加载bracket");
-                    Add(new WarningBox($"无法解析您的{BRACKET_FILENAME}文件。请查看runtime.log了解更多详细信."));
+                    Add(new WarningBox($"无法解析您的{BRACKET_FILENAME}文件。请查看runtime.log了解更多详细信息."));
 
                     return;
                 }

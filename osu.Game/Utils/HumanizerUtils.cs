@@ -20,7 +20,7 @@ namespace osu.Game.Utils
             // this works around https://github.com/xamarin/xamarin-android/issues/2012 and https://github.com/Humanizr/Humanizer/issues/690#issuecomment-368536282
             try
             {
-                return input.Humanize();
+                return input.Humanize(culture: new CultureInfo("zh-Hans"));
             }
             catch (ArgumentException)
             {
