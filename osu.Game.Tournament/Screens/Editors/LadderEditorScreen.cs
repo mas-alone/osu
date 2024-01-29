@@ -49,7 +49,7 @@ namespace osu.Game.Tournament.Screens.Editors
                 Child = new LadderEditorSettings(),
             });
 
-            AddInternal(rightClickMessage = new WarningBox("Right click to place and link matches"));
+            AddInternal(rightClickMessage = new WarningBox("右键以放置/连接比赛"));
 
             ScrollContent.Add(grid = new RectangularPositionSnapGrid(Vector2.Zero)
             {
@@ -93,7 +93,7 @@ namespace osu.Game.Tournament.Screens.Editors
         public MenuItem[] ContextMenuItems =>
             new MenuItem[]
             {
-                new OsuMenuItem("Create new match", MenuItemType.Highlighted, () =>
+                new OsuMenuItem("创建新的比赛", MenuItemType.Highlighted, () =>
                 {
                     Vector2 pos = MatchesContainer.Count == 0 ? Vector2.Zero : lastMatchesContainerMouseDownPosition;
 
@@ -103,7 +103,7 @@ namespace osu.Game.Tournament.Screens.Editors
 
                     editorInfo.Selected.Value = newMatch;
                 }),
-                new OsuMenuItem("Reset teams", MenuItemType.Destructive, () =>
+                new OsuMenuItem("重置队伍", MenuItemType.Destructive, () =>
                 {
                     dialogOverlay?.Push(new LadderResetTeamsDialog(() =>
                     {

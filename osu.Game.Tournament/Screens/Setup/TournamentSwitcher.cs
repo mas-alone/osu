@@ -36,7 +36,7 @@ namespace osu.Game.Tournament.Screens.Setup
             };
             folderButton.Action = () => storage.PresentExternally();
 
-            ButtonText = "Close osu!";
+            ButtonText = "关闭 osu!";
         }
 
         protected override Drawable CreateComponent()
@@ -45,13 +45,13 @@ namespace osu.Game.Tournament.Screens.Setup
 
             FlowContainer.Insert(-1, folderButton = new RoundedButton
             {
-                Text = "Open folder",
+                Text = "打开目录",
                 Width = BUTTON_SIZE
             });
 
             FlowContainer.Insert(-2, reloadTournamentsButton = new RoundedButton
             {
-                Text = "Refresh",
+                Text = "刷新",
                 Width = BUTTON_SIZE
             });
 

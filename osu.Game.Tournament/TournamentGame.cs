@@ -72,8 +72,8 @@ namespace osu.Game.Tournament
                     loadingSpinner.Hide();
                     loadingSpinner.Expire();
 
-                    Logger.Error(t.Exception, "Couldn't load bracket with error");
-                    Add(new WarningBox($"Your {BRACKET_FILENAME} file could not be parsed. Please check runtime.log for more details."));
+                    Logger.Error(t.Exception, "无法加载bracket");
+                    Add(new WarningBox($"无法解析您的{BRACKET_FILENAME}文件。请查看runtime.log了解更多详细信."));
 
                     return;
                 }
@@ -84,7 +84,7 @@ namespace osu.Game.Tournament
                     {
                         Depth = float.MinValue,
                     },
-                    heightWarning = new WarningBox("Please make the window wider")
+                    heightWarning = new WarningBox("窗口太窄了, 拉宽一些")
                     {
                         Anchor = Anchor.BottomCentre,
                         Origin = Anchor.BottomCentre,

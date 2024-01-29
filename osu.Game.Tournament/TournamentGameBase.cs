@@ -221,7 +221,7 @@ namespace osu.Game.Tournament
             {
                 var p = playersRequiringPopulation[i];
                 PopulatePlayer(p, immediate: true);
-                updateLoadProgressMessage($"Populating user stats ({i} / {playersRequiringPopulation.Count})");
+                updateLoadProgressMessage($"正在获取用户数据 ({i} / {playersRequiringPopulation.Count})");
             }
 
             return true;
@@ -247,7 +247,7 @@ namespace osu.Game.Tournament
                 if (populated != null)
                     b.Beatmap = new TournamentBeatmap(populated);
 
-                updateLoadProgressMessage($"Populating round beatmaps ({i} / {beatmapsRequiringPopulation.Count})");
+                updateLoadProgressMessage($"正在获取对局谱面 ({i} / {beatmapsRequiringPopulation.Count})");
             }
 
             return true;
@@ -274,7 +274,7 @@ namespace osu.Game.Tournament
                 if (populated != null)
                     b.Beatmap = new TournamentBeatmap(populated);
 
-                updateLoadProgressMessage($"Populating seeding beatmaps ({i} / {beatmapsRequiringPopulation.Count})");
+                updateLoadProgressMessage($"正在获取 seeding beatmaps ({i} / {beatmapsRequiringPopulation.Count})");
             }
 
             return true;

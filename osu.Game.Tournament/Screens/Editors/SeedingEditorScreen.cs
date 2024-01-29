@@ -71,7 +71,7 @@ namespace osu.Game.Tournament.Screens.Editors
                             },
                             new SettingsSlider<int>
                             {
-                                LabelText = "Seed",
+                                LabelText = "排名",
                                 Width = 0.33f,
                                 Current = Model.Seed
                             },
@@ -79,7 +79,7 @@ namespace osu.Game.Tournament.Screens.Editors
                             {
                                 Width = 0.2f,
                                 Margin = new MarginPadding(10),
-                                Text = "Add beatmap",
+                                Text = "添加谱面",
                                 Action = () => beatmapEditor.CreateNew()
                             },
                             beatmapEditor
@@ -91,7 +91,7 @@ namespace osu.Game.Tournament.Screens.Editors
                         Origin = Anchor.CentreRight,
                         RelativeSizeAxes = Axes.None,
                         Width = 150,
-                        Text = "Delete result",
+                        Text = "删除结果",
                         Action = () =>
                         {
                             Expire();
@@ -177,21 +177,21 @@ namespace osu.Game.Tournament.Screens.Editors
                                 {
                                     new SettingsNumberBox
                                     {
-                                        LabelText = "Beatmap ID",
+                                        LabelText = "谱面 ID",
                                         RelativeSizeAxes = Axes.None,
                                         Width = 200,
                                         Current = beatmapId,
                                     },
                                     new SettingsSlider<int>
                                     {
-                                        LabelText = "Seed",
+                                        LabelText = "排名",
                                         RelativeSizeAxes = Axes.None,
                                         Width = 200,
                                         Current = beatmap.Seed
                                     },
                                     new SettingsTextBox
                                     {
-                                        LabelText = "Score",
+                                        LabelText = "分数",
                                         RelativeSizeAxes = Axes.None,
                                         Width = 200,
                                         Current = score,
@@ -208,7 +208,7 @@ namespace osu.Game.Tournament.Screens.Editors
                                 Origin = Anchor.CentreRight,
                                 RelativeSizeAxes = Axes.None,
                                 Width = 150,
-                                Text = "Delete Beatmap",
+                                Text = "删除谱面",
                                 Action = () =>
                                 {
                                     Expire();

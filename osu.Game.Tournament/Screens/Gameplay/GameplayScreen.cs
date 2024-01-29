@@ -69,13 +69,13 @@ namespace osu.Game.Tournament.Screens.Gameplay
                             {
                                 new ChromaArea
                                 {
-                                    Name = "Left chroma",
+                                    Name = "左侧绿幕",
                                     RelativeSizeAxes = Axes.Both,
                                     Width = 0.5f,
                                 },
                                 new ChromaArea
                                 {
-                                    Name = "Right chroma",
+                                    Name = "右侧绿幕",
                                     RelativeSizeAxes = Axes.Both,
                                     Anchor = Anchor.TopRight,
                                     Origin = Anchor.TopRight,
@@ -98,24 +98,24 @@ namespace osu.Game.Tournament.Screens.Gameplay
                         warmupButton = new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Toggle warmup",
+                            Text = "切换热手",
                             Action = () => warmup.Toggle()
                         },
                         new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Toggle chat",
+                            Text = "切换聊天",
                             Action = () => { State.Value = State.Value == TourneyState.Idle ? TourneyState.Playing : TourneyState.Idle; }
                         },
                         new SettingsSlider<int>
                         {
-                            LabelText = "Chroma width",
+                            LabelText = "绿幕宽度",
                             Current = LadderInfo.ChromaKeyWidth,
                             KeyboardStep = 1,
                         },
                         new SettingsSlider<int>
                         {
-                            LabelText = "Players per team",
+                            LabelText = "每队玩家数量",
                             Current = LadderInfo.PlayersPerTeam,
                             KeyboardStep = 1,
                         },

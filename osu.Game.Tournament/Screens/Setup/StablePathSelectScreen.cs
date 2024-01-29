@@ -70,7 +70,7 @@ namespace osu.Game.Tournament.Screens.Setup
                                     {
                                         Anchor = Anchor.Centre,
                                         Origin = Anchor.Centre,
-                                        Text = "Please select a new location",
+                                        Text = "选择一个新的位置",
                                         Font = OsuFont.Default.With(size: 40)
                                     },
                                 },
@@ -96,7 +96,7 @@ namespace osu.Game.Tournament.Screens.Setup
                                                 Anchor = Anchor.Centre,
                                                 Origin = Anchor.Centre,
                                                 Width = 300,
-                                                Text = "Select stable path",
+                                                Text = "确定",
                                                 Action = ChangePath
                                             },
                                             new RoundedButton
@@ -104,7 +104,7 @@ namespace osu.Game.Tournament.Screens.Setup
                                                 Anchor = Anchor.Centre,
                                                 Origin = Anchor.Centre,
                                                 Width = 300,
-                                                Text = "Auto detect",
+                                                Text = "自动检测",
                                                 Action = AutoDetect
                                             },
                                         }
@@ -133,7 +133,7 @@ namespace osu.Game.Tournament.Screens.Setup
             if (!fileBasedIpc?.SetIPCLocation(target) ?? true)
             {
                 overlay = new DialogOverlay();
-                overlay.Push(new IPCErrorDialog("This is an invalid IPC Directory", "Select a directory that contains an osu! stable cutting edge installation and make sure it has an empty ipc.txt file in it."));
+                overlay.Push(new IPCErrorDialog("无效的IPC目录", "请确保该目录下包含osu! stable的cutting-edge版本并且拥有一个空的ipc.txt"));
                 AddInternal(overlay);
                 Logger.Log("Folder is not an osu! stable CE directory");
                 return;
@@ -149,7 +149,7 @@ namespace osu.Game.Tournament.Screens.Setup
             if (!fileBasedIpc?.AutoDetectIPCLocation() ?? true)
             {
                 overlay = new DialogOverlay();
-                overlay.Push(new IPCErrorDialog("Failed to auto detect", "An osu! stable cutting-edge installation could not be auto detected.\nPlease try and manually point to the directory."));
+                overlay.Push(new IPCErrorDialog("自动检测失败", "无法检测到osu cutting-edge的安装位置.\n请尝试手动指定该位置."));
                 AddInternal(overlay);
             }
             else

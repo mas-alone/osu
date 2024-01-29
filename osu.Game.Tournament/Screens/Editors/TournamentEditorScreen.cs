@@ -76,14 +76,14 @@ namespace osu.Game.Tournament.Screens.Editors
                         new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Add new",
+                            Text = "添加新的项目",
                             Action = () => Storage.Add(new TModel())
                         },
                         new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
                             BackgroundColour = colours.DangerousButtonColour,
-                            Text = "Clear all",
+                            Text = "删除所有项目",
                             Action = () =>
                             {
                                 dialogOverlay?.Push(new TournamentClearAllDialog(() => Storage.Clear()));

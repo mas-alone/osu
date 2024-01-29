@@ -65,43 +65,43 @@ namespace osu.Game.Tournament.Screens.MapPool
                     {
                         new TournamentSpriteText
                         {
-                            Text = "Current Mode"
+                            Text = "当前模式"
                         },
                         buttonRedBan = new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Red Ban",
+                            Text = "红队Ban图",
                             Action = () => setMode(TeamColour.Red, ChoiceType.Ban)
                         },
                         buttonBlueBan = new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Blue Ban",
+                            Text = "蓝队Ban图",
                             Action = () => setMode(TeamColour.Blue, ChoiceType.Ban)
                         },
                         buttonRedPick = new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Red Pick",
+                            Text = "红队选图",
                             Action = () => setMode(TeamColour.Red, ChoiceType.Pick)
                         },
                         buttonBluePick = new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Blue Pick",
+                            Text = "蓝队选图",
                             Action = () => setMode(TeamColour.Blue, ChoiceType.Pick)
                         },
                         new ControlPanel.Spacer(),
                         new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Reset",
+                            Text = "重置",
                             Action = reset
                         },
                         new ControlPanel.Spacer(),
                         new OsuCheckbox
                         {
-                            LabelText = "Split display by mods",
+                            LabelText = "按Mod分割显示",
                             Current = LadderInfo.SplitMapPoolByMods,
                         },
                     },

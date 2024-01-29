@@ -50,18 +50,18 @@ namespace osu.Game.Tournament.Screens.TeamIntro
                         showFirstTeamButton = new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Show first team",
+                            Text = "显示第一队",
                             Action = () => currentTeam.Value = CurrentMatch.Value?.Team1.Value,
                         },
                         showSecondTeamButton = new TourneyButton
                         {
                             RelativeSizeAxes = Axes.X,
-                            Text = "Show second team",
+                            Text = "显示第二队",
                             Action = () => currentTeam.Value = CurrentMatch.Value?.Team2.Value,
                         },
                         new SettingsTeamDropdown(LadderInfo.Teams)
                         {
-                            LabelText = "Show specific team",
+                            LabelText = "显示指定队伍",
                             Current = currentTeam,
                         }
                     }
@@ -272,9 +272,9 @@ namespace osu.Game.Tournament.Screens.TeamIntro
                         Children = new Drawable[]
                         {
                             new TeamDisplay(team) { Margin = new MarginPadding { Bottom = 30 } },
-                            new RowDisplay("Average Rank:", $"#{team.AverageRank:#,0}"),
-                            new RowDisplay("Seed:", team.Seed.Value),
-                            new RowDisplay("Last year's placing:", team.LastYearPlacing.Value > 0 ? $"#{team.LastYearPlacing:#,0}" : "N/A"),
+                            new RowDisplay("队伍平均Rank:", $"#{team.AverageRank:#,0}"),
+                            new RowDisplay("本次排名:", team.Seed.Value),
+                            new RowDisplay("上次比赛中的排名:", team.LastYearPlacing.Value > 0 ? $"#{team.LastYearPlacing:#,0}" : "N/A"),
                             new Container { Margin = new MarginPadding { Bottom = 30 } },
                         }
                     },

@@ -33,7 +33,7 @@ namespace osu.Game.Tournament.Screens.Editors
             ControlPanel.Add(new TourneyButton
             {
                 RelativeSizeAxes = Axes.X,
-                Text = "Add all countries",
+                Text = "添加所有的国家和地区",
                 Action = addAllCountries
             });
         }
@@ -108,31 +108,31 @@ namespace osu.Game.Tournament.Screens.Editors
                         {
                             new SettingsTextBox
                             {
-                                LabelText = "Name",
+                                LabelText = "名称",
                                 Width = 0.2f,
                                 Current = Model.FullName
                             },
                             new SettingsTextBox
                             {
-                                LabelText = "Acronym",
+                                LabelText = "首字母缩写",
                                 Width = 0.2f,
                                 Current = Model.Acronym
                             },
                             new SettingsTextBox
                             {
-                                LabelText = "Flag",
+                                LabelText = "标志旗",
                                 Width = 0.2f,
                                 Current = Model.FlagName
                             },
                             new SettingsTextBox
                             {
-                                LabelText = "Seed",
+                                LabelText = "排名",
                                 Width = 0.2f,
                                 Current = Model.Seed
                             },
                             new SettingsSlider<int, LastYearPlacementSlider>
                             {
-                                LabelText = "Last Year Placement",
+                                LabelText = "上次比赛中的排名",
                                 Width = 0.33f,
                                 Current = Model.LastYearPlacing
                             },
@@ -140,7 +140,7 @@ namespace osu.Game.Tournament.Screens.Editors
                             {
                                 Width = 0.2f,
                                 Margin = new MarginPadding(10),
-                                Text = "Edit seeding results",
+                                Text = "编辑排名信息",
                                 Action = () =>
                                 {
                                     sceneManager?.SetScreen(new SeedingEditorScreen(team, parent));
@@ -149,7 +149,7 @@ namespace osu.Game.Tournament.Screens.Editors
                             playerEditor,
                             new SettingsButton
                             {
-                                Text = "Add player",
+                                Text = "添加玩家",
                                 Action = () => playerEditor.CreateNew()
                             },
                             new Container
@@ -161,7 +161,7 @@ namespace osu.Game.Tournament.Screens.Editors
                                     new DangerousSettingsButton
                                     {
                                         Width = 0.2f,
-                                        Text = "Delete Team",
+                                        Text = "删除队伍",
                                         Anchor = Anchor.TopRight,
                                         Origin = Anchor.TopRight,
                                         Action = () => dialogOverlay?.Push(new DeleteTeamDialog(Model, () =>
@@ -252,7 +252,7 @@ namespace osu.Game.Tournament.Screens.Editors
                                 {
                                     new SettingsNumberBox
                                     {
-                                        LabelText = "User ID",
+                                        LabelText = "用户 ID",
                                         RelativeSizeAxes = Axes.None,
                                         Width = 200,
                                         Current = playerId,
@@ -270,7 +270,7 @@ namespace osu.Game.Tournament.Screens.Editors
                                 Origin = Anchor.CentreRight,
                                 RelativeSizeAxes = Axes.None,
                                 Width = 150,
-                                Text = "Delete Player",
+                                Text = "删除玩家",
                                 Action = () =>
                                 {
                                     Expire();

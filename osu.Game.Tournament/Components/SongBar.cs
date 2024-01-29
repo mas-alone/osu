@@ -106,11 +106,11 @@ namespace osu.Game.Tournament.Components
             {
                 Metadata = new BeatmapMetadata
                 {
-                    Artist = "unknown",
-                    Title = "no beatmap selected",
-                    Author = new RealmUser { Username = "unknown" },
+                    Artist = "未知",
+                    Title = "暂无选择的谱面",
+                    Author = new RealmUser { Username = "未知" },
                 },
-                DifficultyName = "unknown",
+                DifficultyName = "未知",
                 BeatmapSet = new BeatmapSetInfo(),
                 StarRating = 0,
                 Difficulty = new BeatmapDifficulty
@@ -207,7 +207,7 @@ namespace osu.Game.Tournament.Components
                                         Children = new Drawable[]
                                         {
                                             new DiffPiece(stats),
-                                            new DiffPiece(("Star Rating", $"{beatmap.StarRating:0.00}{srExtra}"))
+                                            new DiffPiece(("难度星级", $"{beatmap.StarRating:0.00}{srExtra}"))
                                         }
                                     },
                                     new FillFlowContainer
@@ -219,7 +219,7 @@ namespace osu.Game.Tournament.Components
                                         Direction = FillDirection.Vertical,
                                         Children = new Drawable[]
                                         {
-                                            new DiffPiece(("Length", length.ToFormattedDuration().ToString())),
+                                            new DiffPiece(("长度", length.ToFormattedDuration().ToString())),
                                             new DiffPiece(("BPM", $"{bpm:0.#}")),
                                         }
                                     },
