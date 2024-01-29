@@ -44,7 +44,7 @@ namespace osu.Game.Tournament
                     },
                     saveChangesButton = new TourneyButton
                     {
-                        Text = "Save Changes",
+                        Text = "保存更改",
                         RelativeSizeAxes = Axes.None,
                         Width = 140,
                         Height = 50,

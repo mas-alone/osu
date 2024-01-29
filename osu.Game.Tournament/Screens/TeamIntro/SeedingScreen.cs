@@ -273,7 +273,7 @@ namespace osu.Game.Tournament.Screens.TeamIntro
                         {
                             new TeamDisplay(team) { Margin = new MarginPadding { Bottom = 30 } },
                             new RowDisplay("队伍平均Rank:", $"#{team.AverageRank:#,0}"),
-                            new RowDisplay("本次排名:", team.Seed.Value),
+                            new RowDisplay("本次比赛排名:", team.Seed.Value),
                             new RowDisplay("上次比赛中的排名:", team.LastYearPlacing.Value > 0 ? $"#{team.LastYearPlacing:#,0}" : "N/A"),
                             new Container { Margin = new MarginPadding { Bottom = 30 } },
                         }
