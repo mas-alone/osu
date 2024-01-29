@@ -22,7 +22,7 @@ namespace osu.Game.Graphics
                 if (date == value)
                     return;
 
-                date = value.ToLocalTime();
+                date = value.ToLocalTime().AddHours(-8);
 
                 if (LoadState >= LoadState.Ready)
                     updateTime();
