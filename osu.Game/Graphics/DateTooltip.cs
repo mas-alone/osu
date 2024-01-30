@@ -68,7 +68,7 @@ namespace osu.Game.Graphics
         {
             DateTimeOffset localDate = date.ToLocalTime();
 
-            dateText.Text = localDate.ToString("d MMMM yyyy", new CultureInfo("zh-Hans"));
+            dateText.Text = localDate.ToString("yyyy年 MM月 d日", new CultureInfo("zh-Hans"));
             timeText.Text = localDate.ToString("HH:mm:ss \"UTC\"z", new CultureInfo("zh-Hans"));
         }
 
