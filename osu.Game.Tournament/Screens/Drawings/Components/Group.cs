@@ -48,7 +48,7 @@ namespace osu.Game.Tournament.Screens.Drawings.Components
 
                     Position = new Vector2(0, 7f),
 
-                    Text = $"GROUP {name.ToUpperInvariant()}",
+                    Text = $"分组 {name.ToUpperInvariant()}",
                     Font = OsuFont.Torus.With(weight: FontWeight.Bold, size: 8),
                     Colour = new Color4(255, 204, 34, 255),
                 },
