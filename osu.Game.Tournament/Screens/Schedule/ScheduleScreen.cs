@@ -251,7 +251,7 @@ namespace osu.Game.Tournament.Screens.Schedule
                         Colour = OsuColour.Gray(0.7f),
                         Alpha = conditional ? 0.6f : 1,
                         Margin = new MarginPadding { Horizontal = 10, Vertical = 5 },
-                        Text = match.Date.Value.AddHours(0).ToUniversalTime().ToString("HH:mm") + " UTC+8 " + (conditional ? "(conditional)" : "")
+                        Text = match.Date.Value.ToUniversalTime().ToString("HH:mm") + " UTC+8" + (conditional ? " (conditional)" : "")
                     });
                 }
             }
