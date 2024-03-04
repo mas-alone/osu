@@ -8,13 +8,11 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics;
 using osu.Game.Tournament.Components;
 using osu.Game.Tournament.Models;
 using osu.Game.Tournament.Screens.Ladder.Components;
 using osuTK;
-using osuTK.Graphics;
 
 namespace osu.Game.Tournament.Screens.Schedule
 {
@@ -70,11 +68,6 @@ namespace osu.Game.Tournament.Screens.Schedule
                                                 AutoSizeAxes = Axes.Both,
                                                 Children = new Drawable[]
                                                 {
-                                                    new Box
-                                                    {
-                                                        Colour = Color4.White,
-                                                        Size = new Vector2(50, 10),
-                                                    },
                                                     new TournamentSpriteTextWithBackground("时间表")
                                                     {
                                                         X = 60,
@@ -241,8 +234,9 @@ namespace osu.Game.Tournament.Screens.Schedule
                         Origin = Anchor.TopLeft,
                         Colour = OsuColour.Gray(0.7f),
                         Alpha = conditional ? 0.6f : 1,
-                        Font = OsuFont.Torus,
+                        Font = OsuFont.Torus.With(size: 25),
                         Margin = new MarginPadding { Horizontal = 10, Vertical = 5 },
+                        Padding = new MarginPadding { Top = -15 },
                     });
                     AddInternal(new TournamentSpriteText
                     {
@@ -250,6 +244,7 @@ namespace osu.Game.Tournament.Screens.Schedule
                         Origin = Anchor.BottomLeft,
                         Colour = OsuColour.Gray(0.7f),
                         Alpha = conditional ? 0.6f : 1,
+                        Font = OsuFont.Torus.With(size: 25),
                         Margin = new MarginPadding { Horizontal = 10, Vertical = 5 },
                         Text = match.Date.Value.ToUniversalTime().ToString("HH:mm") + " UTC+8" + (conditional ? " (conditional)" : "")
                     });
