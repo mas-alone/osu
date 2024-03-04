@@ -200,7 +200,7 @@ namespace osu.Game.Online.Chat
         {
             protected override float FontSize => 18;
             protected override float Spacing => 5;
-            protected override float UsernameWidth => 80;
+            protected override float UsernameWidth => 90;
 
             public StandAloneMessage(Message message)
                 : base(message)
