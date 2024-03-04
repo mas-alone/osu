@@ -178,7 +178,7 @@ namespace osu.Game.Online.Chat
 
         protected partial class StandAloneDaySeparator : DaySeparator
         {
-            protected override float TextSize => 18;
+            protected override float TextSize => 16;
             protected override float LineHeight => 1;
             protected override float Spacing => 5;
             protected override float DateAlign => 125;
@@ -198,9 +198,9 @@ namespace osu.Game.Online.Chat
 
         protected partial class StandAloneMessage : ChatLine
         {
-            protected override float FontSize => 20;
+            protected override float FontSize => 18;
             protected override float Spacing => 5;
-            protected override float UsernameWidth => 85;
+            protected override float UsernameWidth => 80;
 
             public StandAloneMessage(Message message)
                 : base(message)

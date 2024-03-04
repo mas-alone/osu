@@ -234,9 +234,9 @@ namespace osu.Game.Tournament.Screens.Schedule
                         Origin = Anchor.TopLeft,
                         Colour = OsuColour.Gray(0.7f),
                         Alpha = conditional ? 0.6f : 1,
-                        Font = OsuFont.Torus.With(size: 25),
+                        Font = OsuFont.Torus.With(size: 20),
                         Margin = new MarginPadding { Horizontal = 10, Vertical = 5 },
-                        Padding = new MarginPadding { Top = -15 },
+                        Padding = new MarginPadding { Top = -10 },
                     });
                     AddInternal(new TournamentSpriteText
                     {
@@ -244,7 +244,7 @@ namespace osu.Game.Tournament.Screens.Schedule
                         Origin = Anchor.BottomLeft,
                         Colour = OsuColour.Gray(0.7f),
                         Alpha = conditional ? 0.6f : 1,
-                        Font = OsuFont.Torus.With(size: 25),
+                        Font = OsuFont.Torus.With(size: 20),
                         Margin = new MarginPadding { Horizontal = 10, Vertical = 5 },
                         Text = match.Date.Value.ToUniversalTime().ToString("HH:mm") + " UTC+8" + (conditional ? " (conditional)" : "")
                     });
