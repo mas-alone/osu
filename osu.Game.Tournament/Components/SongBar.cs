@@ -260,7 +260,7 @@ namespace osu.Game.Tournament.Components
                         }
                     }
                 },
-            new TournamentBeatmapPanel(beatmap)
+                new TournamentBeatmapPanel(beatmap)
                 {
                     RelativeSizeAxes = Axes.X,
                     Width = 0.5f,
