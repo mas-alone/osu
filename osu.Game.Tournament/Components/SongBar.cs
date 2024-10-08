@@ -189,6 +189,14 @@ namespace osu.Game.Tournament.Components
 
                     Children = new Drawable[]
                     {
+                        // 添加一个绿幕
+                        new Box
+                        {
+                            Colour = new Color4(0, 255, 0, 255),
+                            RelativeSizeAxes = Axes.Both,
+                            Depth = float.MaxValue,
+                        },
+
                         new GridContainer
                         {
                             RelativeSizeAxes = Axes.Both,
@@ -246,11 +254,13 @@ namespace osu.Game.Tournament.Components
                                         }
                                     },
                                 },
-                            }
+                            },
+                            // 隐藏原有谱面信息
+                            Alpha = 0,
                         }
                     }
                 },
-                new TournamentBeatmapPanel(beatmap)
+            new TournamentBeatmapPanel(beatmap)
                 {
                     RelativeSizeAxes = Axes.X,
                     Width = 0.5f,
