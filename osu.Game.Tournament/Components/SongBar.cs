@@ -107,7 +107,7 @@ namespace osu.Game.Tournament.Components
                 Metadata = new BeatmapMetadata
                 {
                     Artist = "未知",
-                    Title = "暂无选择的谱面",
+                    Title = "未知谱面",
                     Author = new RealmUser { Username = "未知" },
                 },
                 DifficultyName = "未知",
