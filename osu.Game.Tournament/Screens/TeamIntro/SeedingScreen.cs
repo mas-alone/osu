@@ -186,9 +186,9 @@ namespace osu.Game.Tournament.Screens.TeamIntro
                 Spacing = new Vector2(5),
                 Children = new Drawable[]
                 {
-                    new TournamentSpriteText { Text = title, Colour = TournamentGame.TEXT_COLOUR, },
-                    new TournamentSpriteText { Text = byText, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(weight: FontWeight.Regular) },
-                    new TournamentSpriteText { Text = artist, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(weight: FontWeight.Regular) },
+                    new TournamentSpriteText { Text = title, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(size: 17, weight: FontWeight.Regular) },
+                    new TournamentSpriteText { Text = byText, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(size: 17, weight: FontWeight.Regular) },
+                    new TournamentSpriteText { Text = artist, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(size: 17, weight: FontWeight.Regular) },
                 }
                         },
                         new FillFlowContainer
@@ -200,9 +200,15 @@ namespace osu.Game.Tournament.Screens.TeamIntro
                             Spacing = new Vector2(40),
                             Children = new Drawable[]
                             {
-                                new TournamentSpriteText { Text = beatmap.Score.ToString("#,0"), Colour = TournamentGame.TEXT_COLOUR, Width = 80 },
                                 new TournamentSpriteText
-                                    { Text = "#" + beatmap.Seed.Value.ToString("#,0"), Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(weight: FontWeight.Regular) },
+                                {
+                                    Text = beatmap.Score.ToString("#,0"),
+                                    Colour = TournamentGame.TEXT_COLOUR,
+                                    Width = 80,
+                                    Font = OsuFont.Torus.With(size: 20, weight: FontWeight.Regular)
+                                },
+                                new TournamentSpriteText
+                                    { Text = "#" + beatmap.Seed.Value.ToString("#,0"), Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(size: 20, weight: FontWeight.Regular) },
                             }
                         },
                     };
