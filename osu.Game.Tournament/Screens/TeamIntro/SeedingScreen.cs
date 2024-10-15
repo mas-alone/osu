@@ -155,20 +155,41 @@ namespace osu.Game.Tournament.Screens.TeamIntro
                     RelativeSizeAxes = Axes.X;
                     AutoSizeAxes = Axes.Y;
 
+                    string title = beatmap.Beatmap.Metadata.Title;
+                    string artist = beatmap.Beatmap.Metadata.Artist;
+                    string byText = "by";
+
+                    const int maxlength = 55;
+                    // 计算总长度
+                    int totalLength = title.Length + byText.Length + artist.Length;
+
+                    if (totalLength > maxlength)
+                    {
+                        int allowedLength = maxlength - byText.Length - artist.Length;
+                        if (allowedLength > 3)
+                        {
+                            title = title.Substring(0, allowedLength - 3) + "...";
+                        }
+                        else
+                        {
+                            title = "...";
+                        }
+                    }
+
                     InternalChildren = new Drawable[]
                     {
-                        new FillFlowContainer
-                        {
-                            RelativeSizeAxes = Axes.X,
-                            AutoSizeAxes = Axes.Y,
-                            Direction = FillDirection.Horizontal,
-                            Spacing = new Vector2(5),
-                            Children = new Drawable[]
-                            {
-                                new TournamentSpriteText { Text = beatmap.Beatmap.Metadata.Title, Colour = TournamentGame.TEXT_COLOUR, },
-                                new TournamentSpriteText { Text = "by", Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(weight: FontWeight.Regular) },
-                                new TournamentSpriteText { Text = beatmap.Beatmap.Metadata.Artist, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(weight: FontWeight.Regular) },
-                            }
+            new FillFlowContainer
+            {
+                RelativeSizeAxes = Axes.X,
+                AutoSizeAxes = Axes.Y,
+                Direction = FillDirection.Horizontal,
+                Spacing = new Vector2(5),
+                Children = new Drawable[]
+                {
+                    new TournamentSpriteText { Text = title, Colour = TournamentGame.TEXT_COLOUR, },
+                    new TournamentSpriteText { Text = byText, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(weight: FontWeight.Regular) },
+                    new TournamentSpriteText { Text = artist, Colour = TournamentGame.TEXT_COLOUR, Font = OsuFont.Torus.With(weight: FontWeight.Regular) },
+                }
                         },
                         new FillFlowContainer
                         {
