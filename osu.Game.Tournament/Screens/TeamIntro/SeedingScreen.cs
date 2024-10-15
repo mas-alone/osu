@@ -159,13 +159,13 @@ namespace osu.Game.Tournament.Screens.TeamIntro
                     string artist = beatmap.Beatmap.Metadata.Artist;
                     string byText = "by";
 
-                    const int maxLength = 55;
+                    const int maxlength = 55;
                     // 计算总长度
                     int totalLength = title.Length + byText.Length + artist.Length;
 
-                    if (totalLength > maxLength)
+                    if (totalLength > maxlength)
                     {
-                        int allowedLength = maxLength - byText.Length - artist.Length;
+                        int allowedLength = maxlength - byText.Length - artist.Length;
                         if (allowedLength > 3)
                         {
                             title = title.Substring(0, allowedLength - 3) + "...";
