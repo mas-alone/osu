@@ -193,7 +193,7 @@ namespace osu.Game.Overlays.Chat
                                 AutoSizeAxes = Axes.Y,
                                 Origin = Anchor.TopRight,
                                 Anchor = Anchor.TopRight,
-                                Margin = new MarginPadding { Horizontal = Spacing },
+                                Margin = new MarginPadding { Horizontal = Spacing, Top = 3 },
                                 AccentColour = UsernameColour,
                                 Inverted = !string.IsNullOrEmpty(message.Sender.Colour),
                             },
