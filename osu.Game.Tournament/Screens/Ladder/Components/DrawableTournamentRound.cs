@@ -47,7 +47,7 @@ namespace osu.Game.Tournament.Screens.Ladder.Components
             };
 
             name = round.Name.GetBoundCopy();
-            name.BindValueChanged(_ => textName.Text = ((losers ? "败者晋级赛 " : "") + round.Name).ToUpperInvariant(), true);
+            name.BindValueChanged(_ => textName.Text = ((losers ? "败者组 " : "") + round.Name).ToUpperInvariant(), true);
 
             description = round.Description.GetBoundCopy();
             description.BindValueChanged(_ => textDescription.Text = round.Description.Value?.ToUpperInvariant() ?? string.Empty, true);
