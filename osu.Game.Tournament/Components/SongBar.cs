@@ -107,11 +107,11 @@ namespace osu.Game.Tournament.Components
             {
                 Metadata = new BeatmapMetadata
                 {
-                    Artist = "δ֪",
-                    Title = "δ֪����",
-                    Author = new RealmUser { Username = "δ֪" },
+                    Artist = "未知",
+                    Title = "未知谱面",
+                    Author = new RealmUser { Username = "Jason House" },
                 },
-                DifficultyName = "δ֪",
+                DifficultyName = "未知",
                 BeatmapSet = new BeatmapSetInfo(),
                 StarRating = 0,
                 Difficulty = new BeatmapDifficulty
@@ -190,7 +190,7 @@ namespace osu.Game.Tournament.Components
 
                     Children = new Drawable[]
                     {
-                        // ���һ����Ļ
+                        // 添加一个绿幕
                         new Box
                         {
                             Colour = new Color4(0, 255, 0, 255),
@@ -216,7 +216,7 @@ namespace osu.Game.Tournament.Components
                                         Children = new Drawable[]
                                         {
                                             new DiffPiece(stats),
-                                            new DiffPiece(("Star Rating", $"{beatmap.StarRating.FormatStarRating()}{srExtra}"))
+                                            new DiffPiece(("难度星级", $"{beatmap.StarRating.FormatStarRating()}{srExtra}"))
                                         }
                                     },
                                     new FillFlowContainer
@@ -228,7 +228,7 @@ namespace osu.Game.Tournament.Components
                                         Direction = FillDirection.Vertical,
                                         Children = new Drawable[]
                                         {
-                                            new DiffPiece(("����", length.ToFormattedDuration().ToString())),
+                                            new DiffPiece(("长度", length.ToFormattedDuration().ToString())),
                                             new DiffPiece(("BPM", $"{bpm:0.#}")),
                                         }
                                     },
@@ -256,7 +256,7 @@ namespace osu.Game.Tournament.Components
                                     },
                                 },
                             },
-                            // ����ԭ��������Ϣ
+                            // 隐藏原有谱面信息
                             Alpha = 0,
                         }
                     }
