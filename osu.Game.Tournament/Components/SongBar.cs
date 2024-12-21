@@ -208,7 +208,7 @@ namespace osu.Game.Tournament.Components
                                         Children = new Drawable[]
                                         {
                                             new DiffPiece(stats),
-                                            new DiffPiece(("Star Rating", $"{beatmap.StarRating.FormatStarRating()}{srExtra}"))
+                                            new DiffPiece(("难度星级", $"{beatmap.StarRating.FormatStarRating()}{srExtra}"))
                                         }
                                     },
                                     new FillFlowContainer
@@ -220,7 +220,7 @@ namespace osu.Game.Tournament.Components
                                         Direction = FillDirection.Vertical,
                                         Children = new Drawable[]
                                         {
-                                            new DiffPiece(("����", length.ToFormattedDuration().ToString())),
+                                            new DiffPiece(("长度", length.ToFormattedDuration().ToString())),
                                             new DiffPiece(("BPM", $"{bpm:0.#}")),
                                         }
                                     },
