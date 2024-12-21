@@ -107,11 +107,11 @@ namespace osu.Game.Tournament.Components
             {
                 Metadata = new BeatmapMetadata
                 {
-                    Artist = "δ֪",
-                    Title = "δ֪����",
-                    Author = new RealmUser { Username = "δ֪" },
+                    Artist = "未知",
+                    Title = "未知",
+                    Author = new RealmUser { Username = "֪" },
                 },
-                DifficultyName = "δ֪",
+                DifficultyName = "未知֪",
                 BeatmapSet = new BeatmapSetInfo(),
                 StarRating = 0,
                 Difficulty = new BeatmapDifficulty
