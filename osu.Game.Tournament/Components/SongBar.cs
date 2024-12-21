@@ -109,9 +109,9 @@ namespace osu.Game.Tournament.Components
                 {
                     Artist = "未知",
                     Title = "未知",
-                    Author = new RealmUser { Username = "֪" },
+                    Author = new RealmUser { Username = "未知" },
                 },
-                DifficultyName = "未知֪",
+                DifficultyName = "未知",
                 BeatmapSet = new BeatmapSetInfo(),
                 StarRating = 0,
                 Difficulty = new BeatmapDifficulty
