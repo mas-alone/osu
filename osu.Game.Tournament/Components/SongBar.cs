@@ -15,6 +15,7 @@ using osu.Game.Graphics;
 using osu.Game.Models;
 using osu.Game.Rulesets;
 using osu.Game.Screens.Menu;
+using osu.Game.Utils;
 using osuTK;
 using osuTK.Graphics;
 
@@ -106,11 +107,11 @@ namespace osu.Game.Tournament.Components
             {
                 Metadata = new BeatmapMetadata
                 {
-                    Artist = "未知",
-                    Title = "未知谱面",
-                    Author = new RealmUser { Username = "未知" },
+                    Artist = "δ֪",
+                    Title = "δ֪����",
+                    Author = new RealmUser { Username = "δ֪" },
                 },
-                DifficultyName = "未知",
+                DifficultyName = "δ֪",
                 BeatmapSet = new BeatmapSetInfo(),
                 StarRating = 0,
                 Difficulty = new BeatmapDifficulty
@@ -207,7 +208,7 @@ namespace osu.Game.Tournament.Components
                                         Children = new Drawable[]
                                         {
                                             new DiffPiece(stats),
-                                            new DiffPiece(("难度星级", $"{beatmap.StarRating:0.00}{srExtra}"))
+                                            new DiffPiece(("Star Rating", $"{beatmap.StarRating.FormatStarRating()}{srExtra}"))
                                         }
                                     },
                                     new FillFlowContainer
@@ -219,7 +220,7 @@ namespace osu.Game.Tournament.Components
                                         Direction = FillDirection.Vertical,
                                         Children = new Drawable[]
                                         {
-                                            new DiffPiece(("长度", length.ToFormattedDuration().ToString())),
+                                            new DiffPiece(("����", length.ToFormattedDuration().ToString())),
                                             new DiffPiece(("BPM", $"{bpm:0.#}")),
                                         }
                                     },
