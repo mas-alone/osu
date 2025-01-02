@@ -68,6 +68,7 @@ using osu.Game.Screens.OnlinePlay.Multiplayer;
 using osu.Game.Screens.Play;
 using osu.Game.Screens.Ranking;
 using osu.Game.Screens.Select;
+using osu.Game.Seasonal;
 using osu.Game.Skinning;
 using osu.Game.Updater;
 using osu.Game.Users;
@@ -220,6 +221,11 @@ namespace osu.Game
 
         private readonly List<OverlayContainer> visibleBlockingOverlays = new List<OverlayContainer>();
 
+        /// <summary>
+        /// Whether the game should be limited to only display officially licensed content.
+        /// </summary>
+        public virtual bool HideUnlicensedContent => false;
+
         public OsuGame(string[] args = null)
         {
             this.args = args;
@@ -319,6 +325,7 @@ namespace osu.Game
 
             if (host.Window != null)
             {
+                host.Window.CursorState |= CursorState.Hidden;
                 host.Window.DragDrop += path =>
                 {
                     // on macOS/iOS, URL associations are handled via SDL_DROPFILE events.
@@ -361,7 +368,10 @@ namespace osu.Game
         {
             SentryLogger.AttachUser(API.LocalUser);
 
-            dependencies.Cache(osuLogo = new OsuLogo { Alpha = 0 });
+            if (SeasonalUIConfig.ENABLED)
+                dependencies.CacheAs(osuLogo = new OsuLogoChristmas { Alpha = 0 });
+            else
+                dependencies.CacheAs(osuLogo = new OsuLogo { Alpha = 0 });
 
             // bind config int to database RulesetInfo
             configRuleset = LocalConfig.GetBindable<string>(OsuSetting.Ruleset);
@@ -1418,24 +1428,25 @@ namespace osu.Game
 
         public bool OnPressed(KeyBindingPressEvent<GlobalAction> e)
         {
-            if (e.Repeat)
-                return false;
-
-            if (introScreen == null) return false;
-
             switch (e.Action)
             {
                 case GlobalAction.DecreaseVolume:
                 case GlobalAction.IncreaseVolume:
                     return volume.Adjust(e.Action);
+            }
 
+            // All actions below this point don't allow key repeat.
+            if (e.Repeat)
+                return false;
+
+            // Wait until we're loaded at least to the intro before allowing various interactions.
+            if (introScreen == null) return false;
+
+            switch (e.Action)
+            {
                 case GlobalAction.ToggleMute:
                 case GlobalAction.NextVolumeMeter:
                 case GlobalAction.PreviousVolumeMeter:
-
-                    if (e.Repeat)
-                        return true;
-
                     return volume.Adjust(e.Action);
 
                 case GlobalAction.ToggleFPSDisplay:
