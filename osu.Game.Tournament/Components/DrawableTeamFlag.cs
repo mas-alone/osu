@@ -32,12 +32,48 @@ namespace osu.Game.Tournament.Components
         private void load(TextureStore textures)
         {
             if (team == null) return;
+
             Masking = true;
             CornerRadius = 5;
 
-            Size = new Vector2(75, 54);
-            Masking = true;
-            CornerRadius = 5;
+            Drawable mainContent;
+
+            if (team.Players.Count == 1)
+            {
+                Size = new Vector2(75, 75);
+
+                int uID = team.Players[0].OnlineID;
+                string avatarUrl = $@"https://a.ppy.sh/{uID}";
+
+                mainContent = new Sprite
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    FillMode = FillMode.Fit,
+                    Texture = textures.Get(avatarUrl),
+                };
+            }
+            else
+            {
+                Size = new Vector2(75, 54);
+
+                flagSprite = new Sprite
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    FillMode = FillMode.Fit
+                };
+
+                mainContent = flagSprite;
+
+                (flag = team.FlagName.GetBoundCopy()).BindValueChanged(
+                    _ => flagSprite.Texture = textures.Get($@"Flags/{team.FlagName}"),
+                    true
+                );
+            }
+
             Children = new Drawable[]
             {
                 new Box
@@ -45,17 +81,8 @@ namespace osu.Game.Tournament.Components
                     RelativeSizeAxes = Axes.Both,
                     Colour = Colour4.FromHex("333"),
                 },
-                flagSprite = new Sprite
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Anchor = Anchor.Centre,
-                    Origin = Anchor.Centre,
-                    FillMode = FillMode.Fit
-                },
+                mainContent
             };
-
-                (flag = team.FlagName.GetBoundCopy()).BindValueChanged(_ => flagSprite.Texture = textures.Get($@"Flags/{team.FlagName}"), true);
-            }
         }
     }
 }
