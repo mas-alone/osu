@@ -75,11 +75,20 @@ namespace osu.Game.Tournament.Components
 
         protected override ChatLine? CreateMessage(Message message)
         {
-            if (message.Content.StartsWith("!mp", StringComparison.Ordinal))
+            if (message.Content.StartsWith("!mp", StringComparison.OrdinalIgnoreCase))
+            {
+                // 如果是 "!mp start"，替换内容
+                if (message.Content.Equals("!mp start", StringComparison.OrdinalIgnoreCase))
+                {
+                    message.Content = "比赛还有10秒开始";
+                    return new MatchMessage(message, ladderInfo);
+                }
                 return null;
+            }
 
             return new MatchMessage(message, ladderInfo);
         }
+
 
         protected override StandAloneDrawableChannel CreateDrawableChannel(Channel channel) => new MatchChannel(channel);
 
