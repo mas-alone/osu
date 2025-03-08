@@ -192,7 +192,7 @@ namespace osu.Game.Tournament.Screens.Editors
                     if (teamsWithSameAcronym.Count > 0)
                     {
                         acronymTextBox.SetNoticeText(
-                            $"Acronym '{acronym.NewValue}' is already in use by team{(teamsWithSameAcronym.Count > 1 ? "s" : "")}:\n"
+                            $"首字母缩写 '{acronym.NewValue}' 已被下列团队使用{(teamsWithSameAcronym.Count > 1 ? "s" : "")}:\n"
                             + $"{string.Join(",\n", teamsWithSameAcronym)}", true);
                     }
                     else
