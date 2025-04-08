@@ -181,6 +181,11 @@ namespace osu.Game.Tests.Visual.SongSelect
         {
             AddStep(@"Set scope", () => leaderboard.Scope = BeatmapLeaderboardScope.Global);
             AddStep(@"New Scores", () => leaderboard.SetScores(generateSampleScores(new BeatmapInfo())));
+            AddStep(@"New Scores with teams", () => leaderboard.SetScores(generateSampleScores(new BeatmapInfo()).Select(s =>
+            {
+                s.User.Team = new APITeam();
+                return s;
+            })));
         }
 
         [Test]
@@ -196,6 +201,7 @@ namespace osu.Game.Tests.Visual.SongSelect
             AddStep("ensure no scores displayed", () => leaderboard.SetScores(null));
 
             AddStep(@"Network failure", () => leaderboard.SetErrorState(LeaderboardState.NetworkFailure));
+            AddStep(@"No team", () => leaderboard.SetErrorState(LeaderboardState.NoTeam));
             AddStep(@"No supporter", () => leaderboard.SetErrorState(LeaderboardState.NotSupporter));
             AddStep(@"Not logged in", () => leaderboard.SetErrorState(LeaderboardState.NotLoggedIn));
             AddStep(@"Ruleset unavailable", () => leaderboard.SetErrorState(LeaderboardState.RulesetUnavailable));
@@ -473,7 +479,7 @@ namespace osu.Game.Tests.Visual.SongSelect
                     Accuracy = 0.5140,
                     MaxCombo = 244,
                     TotalScore = 1707827,
-                    Date = DateTime.Now.AddMonths(-3),
+                    Date = DateTime.Now.AddMonths(-10),
                     Mods = new Mod[] { new OsuModHidden(), new OsuModHardRock(), },
                     BeatmapInfo = beatmapInfo,
                     BeatmapHash = beatmapInfo.Hash,
