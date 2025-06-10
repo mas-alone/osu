@@ -10,6 +10,7 @@ using osu.Framework.Bindables;
 using osu.Framework.Logging;
 using osu.Game.Beatmaps;
 using osu.Game.Extensions;
+using osu.Game.Online.API;
 using osu.Game.Online.Leaderboards;
 using osu.Game.Scoring;
 using osu.Game.Screens.Select.Leaderboards;
@@ -19,6 +20,9 @@ namespace osu.Game.Screens.Ranking
     public partial class SoloResultsScreen : ResultsScreen
     {
         private readonly IBindable<LeaderboardScores?> globalScores = new Bindable<LeaderboardScores?>();
+
+        [Resolved]
+        private IAPIProvider api { get; set; } = null!;
 
         [Resolved]
         private LeaderboardManager leaderboardManager { get; set; } = null!;
@@ -78,7 +82,16 @@ namespace osu.Game.Screens.Ranking
                     sortedScores.Add(Score);
                 }
                 else
+                {
+                    bool isOnlineLeaderboard = criteria.Scope != BeatmapLeaderboardScope.Local;
+                    bool presentingLocalUserScore = Score.UserID == api.LocalUser.Value.OnlineID;
+                    bool presentedLocalUserScoreIsBetter = presentingLocalUserScore && clonedScore.UserID == api.LocalUser.Value.OnlineID && clonedScore.TotalScore < Score.TotalScore;
+
+                    if (isOnlineLeaderboard && presentedLocalUserScoreIsBetter)
+                        continue;
+
                     sortedScores.Add(clonedScore);
+                }
             }
 
             // if we haven't encountered a match for the presented score, we still need to attach it.

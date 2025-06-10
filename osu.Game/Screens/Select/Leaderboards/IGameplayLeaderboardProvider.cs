@@ -13,6 +13,11 @@ namespace osu.Game.Screens.Select.Leaderboards
         /// <summary>
         /// List of all scores to display on the leaderboard.
         /// </summary>
-        public IBindableList<GameplayLeaderboardScore> Scores { get; }
+        IBindableList<GameplayLeaderboardScore> Scores { get; }
+    }
+
+    public class EmptyGameplayLeaderboardProvider : IGameplayLeaderboardProvider
+    {
+        public IBindableList<GameplayLeaderboardScore> Scores { get; } = new BindableList<GameplayLeaderboardScore>();
     }
 }

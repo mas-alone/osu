@@ -40,14 +40,14 @@ namespace osu.Game.Configuration
             SetDefault(OsuSetting.Ruleset, string.Empty);
             SetDefault(OsuSetting.Skin, SkinInfo.ARGON_SKIN.ToString());
 
-            SetDefault(OsuSetting.BeatmapDetailTab, PlayBeatmapDetailArea.TabType.Local);
+            SetDefault(OsuSetting.BeatmapDetailTab, BeatmapDetailTab.Local);
             SetDefault(OsuSetting.BeatmapDetailModsFilter, false);
 
             SetDefault(OsuSetting.ShowConvertedBeatmaps, true);
             SetDefault(OsuSetting.DisplayStarsMinimum, 0.0, 0, 10, 0.1);
             SetDefault(OsuSetting.DisplayStarsMaximum, 10.1, 0, 10.1, 0.1);
 
-            SetDefault(OsuSetting.SongSelectGroupingMode, GroupMode.All);
+            SetDefault(OsuSetting.SongSelectGroupMode, GroupMode.None);
             SetDefault(OsuSetting.SongSelectSortingMode, SortMode.Title);
 
             SetDefault(OsuSetting.RandomSelectAlgorithm, RandomSelectAlgorithm.RandomPermutation);
@@ -225,6 +225,8 @@ namespace osu.Game.Configuration
 
             SetDefault(OsuSetting.EditorSubmissionNotifyOnDiscussionReplies, true);
             SetDefault(OsuSetting.EditorSubmissionLoadInBrowserAfterSubmission, true);
+
+            SetDefault(OsuSetting.WasSupporter, false);
         }
 
         protected override bool CheckLookupContainsPrivateInformation(OsuSetting lookup)
@@ -387,7 +389,7 @@ namespace osu.Game.Configuration
         SaveUsername,
         DisplayStarsMinimum,
         DisplayStarsMaximum,
-        SongSelectGroupingMode,
+        SongSelectGroupMode,
         SongSelectSortingMode,
         RandomSelectAlgorithm,
         ModSelectHotkeyStyle,
@@ -466,5 +468,11 @@ namespace osu.Game.Configuration
         EditorShowStoryboard,
         EditorSubmissionNotifyOnDiscussionReplies,
         EditorSubmissionLoadInBrowserAfterSubmission,
+
+        /// <summary>
+        /// Cached state of whether local user is a supporter.
+        /// Used to allow early checks (ie for startup samples) to be in the correct state, even if the API authentication process has not completed.
+        /// </summary>
+        WasSupporter
     }
 }
