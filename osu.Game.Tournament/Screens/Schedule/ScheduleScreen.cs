@@ -70,7 +70,7 @@ namespace osu.Game.Tournament.Screens.Schedule
                                                 AutoSizeAxes = Axes.Both,
                                                 Children = new Drawable[]
                                                 {
-                                                    new TournamentSpriteTextWithBackground("ʱ���")
+                                                    new TournamentSpriteTextWithBackground("时间表")
                                                     {
                                                         X = 60,
                                                         Scale = new Vector2(0.8f)
@@ -145,13 +145,13 @@ namespace osu.Game.Tournament.Screens.Schedule
                             Direction = FillDirection.Horizontal,
                             Children = new Drawable[]
                             {
-                                new ScheduleContainer("����ı���")
+                                new ScheduleContainer("最近的比赛")
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Width = 0.4f,
                                     ChildrenEnumerable = recent.Select(p => new ScheduleMatch(p))
                                 },
-                                new ScheduleContainer("�������еı���")
+                                new ScheduleContainer("即将进行的比赛")
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Width = 0.6f,
@@ -160,7 +160,7 @@ namespace osu.Game.Tournament.Screens.Schedule
                             }
                         }
                     },
-                    comingUpNext = new ScheduleContainer("������")
+                    comingUpNext = new ScheduleContainer("接下来")
                     {
                         RelativeSizeAxes = Axes.Both,
                         Height = 0.25f,
@@ -262,9 +262,9 @@ namespace osu.Game.Tournament.Screens.Schedule
             {
             }
 
-            protected override string Format() => Date < DateTimeOffset.Now
-                ? $"Started {base.Format()}"
-                : $"Starting {base.Format()}";
+            protected override LocalisableString Format() => Date < DateTimeOffset.Now
+                ? LocalisableString.Interpolate($"已在 {base.Format()} 开始")
+                : LocalisableString.Interpolate($"将在 {base.Format()} 开始");
         }
 
         public partial class ScheduleContainer : Container
