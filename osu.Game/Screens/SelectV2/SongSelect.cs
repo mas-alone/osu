@@ -5,11 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
 using osu.Framework.Audio.Track;
 using osu.Framework.Bindables;
+using osu.Framework.Development;
+using osu.Framework.Extensions;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -17,6 +21,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Cursor;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Input;
 using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osu.Framework.Input.StateChanges;
@@ -34,6 +39,7 @@ using osu.Game.Graphics.UserInterface;
 using osu.Game.Input.Bindings;
 using osu.Game.Localisation;
 using osu.Game.Online.API;
+using osu.Game.Online.API.Requests.Responses;
 using osu.Game.Overlays;
 using osu.Game.Overlays.Mods;
 using osu.Game.Overlays.Volume;
@@ -59,9 +65,20 @@ namespace osu.Game.Screens.SelectV2
     [Cached(typeof(ISongSelect))]
     public abstract partial class SongSelect : ScreenWithBeatmapBackground, IKeyBindingHandler<GlobalAction>, ISongSelect
     {
-        // this is intentionally slightly higher than key repeat, but low enough to not impede user experience.
-        // this avoids rapid churn loading when iterating the carousel using keyboard.
-        public const int SELECTION_DEBOUNCE = 100;
+        /// <summary>
+        /// A debounce that governs how long after a panel is selected before the rest of song select (and the game at large)
+        /// updates to show that selection.
+        ///
+        /// This is intentionally slightly higher than key repeat, but low enough to not impede user experience.
+        /// </summary>
+        public const int SELECTION_DEBOUNCE = 150;
+
+        /// <summary>
+        /// A general "global" debounce to be applied to anything aggressive difficulty calculation at song select,
+        /// either after selection or after a panel comes on screen. Value should be low enough that users don't complain,
+        /// but otherwise as high as possible to reduce overheads.
+        /// </summary>
+        public const int DIFFICULTY_CALCULATION_DEBOUNCE = 150;
 
         private const float logo_scale = 0.4f;
         private const double fade_duration = 300;
@@ -133,8 +150,9 @@ namespace osu.Game.Screens.SelectV2
         [Resolved]
         private IDialogOverlay? dialogOverlay { get; set; }
 
-        [Cached]
-        private RealmPopulatingOnlineLookupSource onlineLookupSource = new RealmPopulatingOnlineLookupSource();
+        private InputManager inputManager = null!;
+
+        private readonly RealmPopulatingOnlineLookupSource onlineLookupSource = new RealmPopulatingOnlineLookupSource();
 
         private Bindable<bool> configBackgroundBlur = null!;
 
@@ -286,9 +304,10 @@ namespace osu.Game.Screens.SelectV2
             });
         }
 
-        private void requestRecommendedSelection(IEnumerable<BeatmapInfo> b)
+        private void requestRecommendedSelection(IEnumerable<GroupedBeatmap> groupedBeatmaps)
         {
-            queueBeatmapSelection(difficultyRecommender?.GetRecommendedBeatmap(b) ?? b.First());
+            var recommendedBeatmap = difficultyRecommender?.GetRecommendedBeatmap(groupedBeatmaps.Select(gb => gb.Beatmap)) ?? groupedBeatmaps.First().Beatmap;
+            queueBeatmapSelection(groupedBeatmaps.First(bug => bug.Beatmap.Equals(recommendedBeatmap)));
         }
 
         /// <summary>
@@ -329,6 +348,8 @@ namespace osu.Game.Screens.SelectV2
         {
             base.LoadComplete();
 
+            inputManager = GetContainingInputManager()!;
+
             filterControl.CriteriaChanged += criteriaChanged;
 
             modSelectOverlay.State.BindValueChanged(v =>
@@ -349,6 +370,7 @@ namespace osu.Game.Screens.SelectV2
                 ensurePlayingSelected();
                 updateBackgroundDim();
                 updateWedgeVisibility();
+                fetchOnlineInfo();
             });
         }
 
@@ -366,7 +388,66 @@ namespace osu.Game.Screens.SelectV2
                 new Dimension(),
                 new Dimension(GridSizeMode.Relative, 0.5f, minSize: 500, maxSize: 700 + widescreenBonusWidth * 300),
             };
+
+            if (this.IsCurrentScreen())
+                updateDebounce();
         }
+
+        #region Selection debounce
+
+        private BeatmapInfo? debounceQueuedSelection;
+        private double debounceElapsedTime;
+
+        private void debounceQueueSelection(BeatmapInfo beatmap)
+        {
+            debounceQueuedSelection = beatmap;
+            debounceElapsedTime = 0;
+        }
+
+        private void updateDebounce()
+        {
+            if (debounceQueuedSelection == null) return;
+
+            double elapsed = Clock.ElapsedFrameTime;
+
+            // When a key is being held, assume the user is traversing the carousel using key repeat.
+            // We want to change panels less often in this state (basically making debounce longer than initial key repeat, at least).
+            double debounceInterval = inputManager.CurrentState.Keyboard.Keys.HasAnyButtonPressed ? SELECTION_DEBOUNCE * 2 : SELECTION_DEBOUNCE;
+
+            // avoid debounce running early if there's a single long frame.
+            if (!DebugUtils.IsNUnitRunning && Clock.FramesPerSecond > 0)
+                elapsed = Math.Min(1000 / Clock.FramesPerSecond, elapsed);
+
+            debounceElapsedTime += elapsed;
+
+            if (debounceElapsedTime >= debounceInterval)
+                performDebounceSelection();
+        }
+
+        private void performDebounceSelection()
+        {
+            if (debounceQueuedSelection == null) return;
+
+            try
+            {
+                if (Beatmap.Value.BeatmapInfo.Equals(debounceQueuedSelection))
+                    return;
+
+                Beatmap.Value = beatmaps.GetWorkingBeatmap(debounceQueuedSelection);
+            }
+            finally
+            {
+                cancelDebounceSelection();
+            }
+        }
+
+        private void cancelDebounceSelection()
+        {
+            debounceQueuedSelection = null;
+            debounceElapsedTime = 0;
+        }
+
+        #endregion
 
         #region Audio
 
@@ -431,8 +512,6 @@ namespace osu.Game.Screens.SelectV2
 
         #region Selection handling
 
-        private ScheduledDelegate? selectionDebounce;
-
         /// <summary>
         /// Finalises selection on the given <see cref="BeatmapInfo"/> and runs the provided action if possible.
         /// </summary>
@@ -448,7 +527,7 @@ namespace osu.Game.Screens.SelectV2
 
             // To ensure sanity, cancel any pending selection as we are about to force a selection.
             // Carousel selection will update to the forced selection via a call of `ensureGlobalBeatmapValid` below, or when song select becomes current again.
-            selectionDebounce?.Cancel();
+            cancelDebounceSelection();
 
             // Forced refetch is important here to guarantee correct invalidation across all difficulties (editor specific).
             Beatmap.Value = beatmaps.GetWorkingBeatmap(beatmap, true);
@@ -468,23 +547,16 @@ namespace osu.Game.Screens.SelectV2
         /// - After <see cref="SELECTION_DEBOUNCE"/>, update the global beatmap. This in turn causes song select visuals (title, details, leaderboard) to update.
         ///   This debounce is intended to avoid high overheads from churning lookups while a user is changing selection via rapid keyboard operations.
         /// </remarks>
-        /// <param name="beatmap">The beatmap to be selected.</param>
-        private void queueBeatmapSelection(BeatmapInfo beatmap)
+        /// <param name="groupedBeatmap">The beatmap to be selected.</param>
+        private void queueBeatmapSelection(GroupedBeatmap groupedBeatmap)
         {
             if (!this.IsCurrentScreen())
                 return;
 
-            carousel.CurrentSelection = beatmap;
+            carousel.CurrentGroupedBeatmap = groupedBeatmap;
 
             // Debounce consideration is to avoid beatmap churn on key repeat selection.
-            selectionDebounce?.Cancel();
-            selectionDebounce = Scheduler.AddDelayed(() =>
-            {
-                if (Beatmap.Value.BeatmapInfo.Equals(beatmap))
-                    return;
-
-                Beatmap.Value = beatmaps.GetWorkingBeatmap(beatmap);
-            }, SELECTION_DEBOUNCE);
+            debounceQueueSelection(groupedBeatmap.Beatmap);
         }
 
         private bool ensureGlobalBeatmapValid()
@@ -492,7 +564,7 @@ namespace osu.Game.Screens.SelectV2
             if (!this.IsCurrentScreen())
                 return false;
 
-            finaliseBeatmapSelection();
+            performDebounceSelection();
 
             // While filtering, let's not ever attempt to change selection.
             // This will be resolved after the filter completes, see `newItemsPresented`.
@@ -505,7 +577,7 @@ namespace osu.Game.Screens.SelectV2
 
             if (validSelection)
             {
-                carousel.CurrentSelection = currentBeatmap.BeatmapInfo;
+                carousel.CurrentBeatmap = currentBeatmap.BeatmapInfo;
                 return true;
             }
 
@@ -513,7 +585,7 @@ namespace osu.Game.Screens.SelectV2
             if (Beatmap.IsDefault)
             {
                 validSelection = carousel.NextRandom();
-                finaliseBeatmapSelection();
+                performDebounceSelection();
                 return validSelection;
             }
 
@@ -528,22 +600,16 @@ namespace osu.Game.Screens.SelectV2
 
                 if (validBeatmaps.Any())
                 {
-                    requestRecommendedSelection(validBeatmaps);
+                    carousel.CurrentBeatmap = difficultyRecommender?.GetRecommendedBeatmap(validBeatmaps) ?? validBeatmaps.First();
                     return true;
                 }
             }
 
             // If all else fails, use the default beatmap.
             Beatmap.SetDefault();
-            finaliseBeatmapSelection();
+            performDebounceSelection();
 
             return validSelection;
-
-            void finaliseBeatmapSelection()
-            {
-                if (selectionDebounce?.State == ScheduledDelegate.RunState.Waiting)
-                    selectionDebounce?.RunTask();
-            }
         }
 
         private bool checkBeatmapValidForSelection(BeatmapInfo beatmap, FilterCriteria? criteria)
@@ -649,6 +715,7 @@ namespace osu.Game.Screens.SelectV2
 
             ensurePlayingSelected();
             updateBackgroundDim();
+            fetchOnlineInfo();
         }
 
         private void onLeavingScreen()
@@ -789,7 +856,7 @@ namespace osu.Game.Screens.SelectV2
             // Interrupting could cause the debounce interval to be reduced.
             //
             // `ensureGlobalBeatmapValid` is run post-selection which will resolve any pending incompatibilities (see `Beatmap` bindable callback).
-            if (selectionDebounce?.State != ScheduledDelegate.RunState.Waiting)
+            if (debounceQueuedSelection == null)
                 ensureGlobalBeatmapValid();
 
             updateWedgeVisibility();
@@ -850,7 +917,7 @@ namespace osu.Game.Screens.SelectV2
             // For simplicity, disable this functionality on mobile.
             bool isTouchInput = e.CurrentState.Mouse.LastSource is ISourcedFromTouch;
 
-            if (!carousel.AbsoluteScrolling && !isTouchInput && mouseDownPriority)
+            if (!carousel.AbsoluteScrolling && !isTouchInput && mouseDownPriority && revealingBackground == null)
             {
                 revealingBackground = Scheduler.AddDelayed(() =>
                 {
@@ -950,6 +1017,75 @@ namespace osu.Game.Screens.SelectV2
             }
 
             return base.OnKeyDown(e);
+        }
+
+        #endregion
+
+        #region Online lookups
+
+        public enum BeatmapSetLookupStatus
+        {
+            InProgress,
+            Completed,
+        }
+
+        public class BeatmapSetLookupResult
+        {
+            public BeatmapSetLookupStatus Status { get; }
+            public APIBeatmapSet? Result { get; }
+
+            private BeatmapSetLookupResult(BeatmapSetLookupStatus status, APIBeatmapSet? result)
+            {
+                Status = status;
+                Result = result;
+            }
+
+            public static BeatmapSetLookupResult InProgress() => new BeatmapSetLookupResult(BeatmapSetLookupStatus.InProgress, null);
+            public static BeatmapSetLookupResult Completed(APIBeatmapSet? beatmapSet) => new BeatmapSetLookupResult(BeatmapSetLookupStatus.Completed, beatmapSet);
+        }
+
+        /// <summary>
+        /// Result of the latest online beatmap set lookup.
+        /// Note that this being <see langword="null"/> or <see cref="BeatmapSetLookupResult.InProgress"/> is different from
+        /// being a <see cref="BeatmapSetLookupResult.Completed"/> with a <see cref="BeatmapSetLookupResult.Result"/> of null.
+        /// The former indicates a lookup never occurring or being in progress, while the latter indicates a completed lookup with no result.
+        /// </summary>
+        [Cached(typeof(IBindable<BeatmapSetLookupResult?>))]
+        private readonly Bindable<BeatmapSetLookupResult?> lastLookupResult = new Bindable<BeatmapSetLookupResult?>();
+
+        private CancellationTokenSource? onlineLookupCancellation;
+        private Task<APIBeatmapSet?>? currentOnlineLookup;
+
+        private void fetchOnlineInfo()
+        {
+            var beatmapSetInfo = Beatmap.Value.BeatmapSetInfo;
+
+            if (lastLookupResult.Value?.Result?.OnlineID == beatmapSetInfo.OnlineID)
+                return;
+
+            onlineLookupCancellation?.Cancel();
+            onlineLookupCancellation = null;
+
+            if (beatmapSetInfo.OnlineID < 0)
+            {
+                lastLookupResult.Value = BeatmapSetLookupResult.Completed(null);
+                return;
+            }
+
+            lastLookupResult.Value = BeatmapSetLookupResult.InProgress();
+            onlineLookupCancellation = new CancellationTokenSource();
+            currentOnlineLookup = onlineLookupSource.GetBeatmapSetAsync(beatmapSetInfo.OnlineID, onlineLookupCancellation.Token);
+            currentOnlineLookup.ContinueWith(t =>
+            {
+                if (t.IsCompletedSuccessfully)
+                    Schedule(() => lastLookupResult.Value = BeatmapSetLookupResult.Completed(t.GetResultSafely()));
+
+                if (t.Exception != null)
+                {
+                    Logger.Log($"Error when fetching online beatmap set: {t.Exception}", LoggingTarget.Network);
+                    Schedule(() => lastLookupResult.Value = BeatmapSetLookupResult.Completed(null));
+                }
+            });
         }
 
         #endregion
