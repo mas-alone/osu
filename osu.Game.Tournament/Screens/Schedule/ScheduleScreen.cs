@@ -8,6 +8,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Game.Graphics;
 using osu.Game.Tournament.Components;
 using osu.Game.Tournament.Models;
@@ -68,7 +69,7 @@ namespace osu.Game.Tournament.Screens.Schedule
                                                 AutoSizeAxes = Axes.Both,
                                                 Children = new Drawable[]
                                                 {
-                                                    new TournamentSpriteTextWithBackground("时间表")
+                                                    new TournamentSpriteTextWithBackground("ʱ���")
                                                     {
                                                         X = 60,
                                                         Scale = new Vector2(0.8f)
@@ -143,13 +144,13 @@ namespace osu.Game.Tournament.Screens.Schedule
                             Direction = FillDirection.Horizontal,
                             Children = new Drawable[]
                             {
-                                new ScheduleContainer("最近的比赛")
+                                new ScheduleContainer("����ı���")
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Width = 0.4f,
                                     ChildrenEnumerable = recent.Select(p => new ScheduleMatch(p))
                                 },
-                                new ScheduleContainer("即将进行的比赛")
+                                new ScheduleContainer("�������еı���")
                                 {
                                     RelativeSizeAxes = Axes.Both,
                                     Width = 0.6f,
@@ -158,7 +159,7 @@ namespace osu.Game.Tournament.Screens.Schedule
                             }
                         }
                     },
-                    comingUpNext = new ScheduleContainer("接下来")
+                    comingUpNext = new ScheduleContainer("������")
                     {
                         RelativeSizeAxes = Axes.Both,
                         Height = 0.25f,
@@ -261,8 +262,8 @@ namespace osu.Game.Tournament.Screens.Schedule
             }
 
             protected override string Format() => Date < DateTimeOffset.Now
-                ? $"已在 {base.Format()} 开始"
-                : $"将在 {base.Format()} 开始";
+                ? $"Started {base.Format()}"
+                : $"Starting {base.Format()}";
         }
 
         public partial class ScheduleContainer : Container
