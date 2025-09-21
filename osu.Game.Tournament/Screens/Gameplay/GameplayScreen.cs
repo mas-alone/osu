@@ -70,13 +70,13 @@ namespace osu.Game.Tournament.Screens.Gameplay
                             {
                                 new ChromaArea
                                 {
-                                    Name = "�����Ļ",
+                                    Name = "左侧绿幕",
                                     RelativeSizeAxes = Axes.Both,
                                     Width = 0.5f,
                                 },
                                 new ChromaArea
                                 {
-                                    Name = "�Ҳ���Ļ",
+                                    Name = "右侧绿幕",
                                     RelativeSizeAxes = Axes.Both,
                                     Anchor = Anchor.TopRight,
                                     Origin = Anchor.TopRight,
@@ -98,22 +98,22 @@ namespace osu.Game.Tournament.Screens.Gameplay
                     {
                         new LabelledSwitchButton
                         {
-                            Label = "Warmup",
+                            Label = "是否热手",
                             Current = warmup,
                         },
                         chatToggle = new LabelledSwitchButton
                         {
-                            Label = "Show chat",
+                            Label = "显示聊天",
                         },
                         new SettingsSlider<int>
                         {
-                            LabelText = "��Ļ���",
+                            LabelText = "绿幕宽度",
                             Current = LadderInfo.ChromaKeyWidth,
                             KeyboardStep = 1,
                         },
                         new SettingsSlider<int>
                         {
-                            LabelText = "ÿ���������",
+                            LabelText = "每队玩家数量",
                             Current = LadderInfo.PlayersPerTeam,
                             KeyboardStep = 1,
                         },
