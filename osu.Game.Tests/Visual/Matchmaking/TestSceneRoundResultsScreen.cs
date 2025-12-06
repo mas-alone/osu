@@ -13,26 +13,25 @@ using osu.Game.Online.API.Requests.Responses;
 using osu.Game.Online.Rooms;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Scoring;
-using osu.Game.Screens.OnlinePlay.Matchmaking.Screens.RoundResults;
-using osu.Game.Tests.Visual.Multiplayer;
+using osu.Game.Screens.OnlinePlay.Matchmaking.Match.RoundResults;
 using osuTK;
 
 namespace osu.Game.Tests.Visual.Matchmaking
 {
-    public partial class TestSceneRoundResultsScreen : MultiplayerTestScene
+    public partial class TestSceneRoundResultsScreen : MatchmakingTestScene
     {
         public override void SetUpSteps()
         {
             base.SetUpSteps();
 
-            AddStep("join room", () => JoinRoom(CreateDefaultRoom()));
+            AddStep("join room", () => JoinRoom(CreateDefaultRoom(MatchType.Matchmaking)));
             WaitForJoined();
 
             setupRequestHandler();
 
             AddStep("load screen", () =>
             {
-                Child = new ScreenStack(new RoundResultsScreen())
+                Child = new ScreenStack(new SubScreenRoundResults())
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
